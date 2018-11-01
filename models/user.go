@@ -2,8 +2,8 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-// Person struct model
-type Person struct {
+// User struct model
+type User struct {
 	gorm.Model
 	PrivyID   string `json:"privyid,omitempty"`
 	FirstName string `json:"firstname,omitempty"`

@@ -11,7 +11,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-var people []models.Person
+var people []models.User
 var db *gorm.DB
 var err error
 
@@ -22,7 +22,7 @@ func main() {
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&models.Person{})
+	db.AutoMigrate(&models.User{})
 
 	router := mux.NewRouter()
 	router.HandleFunc("/people", GetPeople).Methods("GET")
@@ -40,7 +40,7 @@ func GetPeople(w http.ResponseWriter, r *http.Request) {
 
 // GetPerson return a single person by PrivyID
 func GetPerson(w http.ResponseWriter, r *http.Request) {
-	var person models.Person
+	var person models.User
 	params := mux.Vars(r)
 	db.Where("privy_id = ?", params["privyid"]).First(&person)
 	json.NewEncoder(w).Encode(&person)
@@ -48,7 +48,7 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 
 // CreatePerson creates a new person data
 func CreatePerson(w http.ResponseWriter, r *http.Request) {
-	var person models.Person
+	var person models.User
 	_ = json.NewDecoder(r.Body).Decode(&person)
 	db.NewRecord(person)
 	db.Create(&person)
@@ -58,5 +58,5 @@ func CreatePerson(w http.ResponseWriter, r *http.Request) {
 // DeletePerson delete person data from collection
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	db.Where("privy_id = ?", params["privyid"]).Delete(&models.Person{})
+	db.Where("privy_id = ?", params["privyid"]).Delete(&models.User{})
 }
